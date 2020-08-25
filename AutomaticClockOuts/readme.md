@@ -29,5 +29,14 @@ func azure functionapp publish time-tracker-azure-functions
 ```
 
 NOTE:
-Don't forget to set up the env variable `COSMOS_DB_KEY`, check the pinned
-message in our slack channel to get this value
+Don't forget to set the following environment variables to make this app work locally:
+
+```sh
+ENDPOINT='XXX'
+KEY='XXX'
+CLIENT_ID='XXX'
+AUTHORITY='XXX'
+CLIENT_SECRET='XXX'
+SLACK_WEBHOOK='XXX'
+``` 
+Check the pinned message in our slack channel to get these values
