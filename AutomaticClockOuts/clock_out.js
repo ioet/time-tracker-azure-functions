@@ -28,7 +28,7 @@ const doClockOut = async (context, timer) => {
       context.log(`I am going to clock out ${JSON.stringify(timeEntryAsJson)}`);
       timeEntryAsJson.end_date = timeEntry.getTimeToClockOut()
       console.log(`I am doing it for you ${JSON.stringify(findUser(users, timeEntry.owner_id))}`)
-      axios.post('https://hooks.slack.com/services/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',
+      axios.post(process.env["SLACK_WEBHOOK"],
         {"text": `I am doing it for you ${JSON.stringify(findUser(users, timeEntry.owner_id))}`}
       )
         .then(function (response) {
