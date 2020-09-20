@@ -3,7 +3,10 @@ const config = {
     key: process.env["COSMOS_DB_KEY"],
     databaseId: "time-tracker-db",
     containerId: "time_entry",
-    partitionKey: { kind: "Hash", paths: ["/category"] }
+    partitionKey: { kind: "Hash", paths: ["/category"] },
+    client_id: process.env["MS_CLIENT_ID"],
+    authority: process.env["MS_AUTHORITY"],
+    clientSecret: process.env["MS_CLIENT_SECRET"]
 };
 
 module.exports = config;
