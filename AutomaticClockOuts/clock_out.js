@@ -22,30 +22,35 @@ const doClockOut = async (context, timer) => {
 
   context.log(`Checking for time-entries that need to be clocked out`);
   let totalClockOutsExecuted = 0;
+  const usersWithClockOut = []
   await Promise.all(entries.map(async (timeEntryAsJson) => {
     const timeEntry = new TimeEntry(timeEntryAsJson)
     if (timeEntry.needsToBeClockedOut()) {
-      context.log(`I am going to clock out ${JSON.stringify(timeEntryAsJson)}`);
+      usersWithClockOut.push(findUser(users, timeEntry.timeEntry.owner_id))
       timeEntryAsJson.end_date = timeEntry.getTimeToClockOut()
-      console.log(`I am doing it for you ${JSON.stringify(findUser(users, timeEntry.owner_id))}`)
-      axios.post(process.env["SLACK_WEBHOOK"],
-        {"text": `I am doing it for you ${JSON.stringify(findUser(users, timeEntry.owner_id))}`}
-      )
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      console.log(JSON.stringify(timeEntry))
+      await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson)
       totalClockOutsExecuted++
     }
   }));
+  if(totalClockOutsExecuted > 0){
+    axios.post(process.env["SLACK_WEBHOOK"],
+      {
+        "text": `Hey guys, I did a clock out for you. \nVisit https://timetracker.ioet.com/ and set the right end time for your entries :pls: \n- ${usersWithClockOut.join('\n- ')}`
+      }
+    )
+      .then(function (response) {
+        // console.log(response);
+      })
+      .catch(function (error) {
+        context.log(error);
+      });
+  }
   context.log(`I just clocked out ${totalClockOutsExecuted} entries, thanks are not needed...`);
 }
 
 const findUser = (users, id) => {
-  return users.find( user => user.objectId === id)
+  const user = users.find( user => user.objectId === id)
+  return user.displayName
 }
 
 module.exports = { doClockOut };
