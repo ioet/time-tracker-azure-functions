@@ -6,7 +6,7 @@ const MsalClient = require('./msal_client')
 
 const doClockOut = async (context, timer) => {
   context.log(`I am going to check how many entries were not clocked out ${new Date()}`);
-  const {endpoint, key, databaseId, containerId, azureEndpoint} = config;
+  const {endpoint, key, databaseId, containerId, slackWebHook} = config;
   const client = new CosmosClient({endpoint, key});
   const database = client.database(databaseId);
   const container = database.container(containerId);
@@ -33,7 +33,7 @@ const doClockOut = async (context, timer) => {
     }
   }));
   if(totalClockOutsExecuted > 0){
-    axios.post(process.env["SLACK_WEBHOOK"],
+    axios.post(slackWebHook,
       {
         "text": `Hey guys, I did a clock out for you. \nVisit https://timetracker.ioet.com/ and set the right end time for your entries :pls: \n- ${usersWithClockOut.join('\n- ')}`
       }

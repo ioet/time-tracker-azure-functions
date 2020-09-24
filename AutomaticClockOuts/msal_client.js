@@ -1,20 +1,19 @@
 const axios = require("axios")
 const msal = require('@azure/msal-node');
+const config = require("./config");
 
 const findUsersInMS = async() => {
+    const {clientId, authority, clientSecret} = config;
     const endpoint = 'https://graph.windows.net/ioetec.onmicrosoft.com'
-    const config = {
+    const configuration = {
         auth: {
-            clientId: process.env["MS_CLIENT_ID"],
-            authority: process.env["MS_AUTHORITY"],
-            clientSecret: process.env["MS_CLIENT_SECRET"]
+            clientId: clientId,
+            authority: authority,
+            clientSecret: clientSecret
         }
     };
 
-    console.log('---------------------------------------------')
-    console.log(JSON.stringify(config))
-
-    const cca = new msal.ConfidentialClientApplication(config);
+    const cca = new msal.ConfidentialClientApplication(configuration);
     const clientCredentialRequest = {
         scopes: ['https://graph.windows.net/.default'],
     };
