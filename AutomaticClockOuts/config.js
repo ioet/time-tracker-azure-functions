@@ -1,9 +1,13 @@
 const config = {
-    endpoint: "https://time-tracker-db.documents.azure.com:443/",
-    key: process.env["COSMOS_DB_KEY"],
+    endpoint: "xxx",
+    key: "xxx",
     databaseId: "time-tracker-db",
     containerId: "time_entry",
-    partitionKey: { kind: "Hash", paths: ["/category"] }
+    partitionKey: { kind: "Hash", paths: ["/category"] },
+    clientId: "xxx",
+    authority: "xxx",
+    clientSecret: "xxx",
+    slackWebHook: "xxx"
 };
 
 module.exports = config;
