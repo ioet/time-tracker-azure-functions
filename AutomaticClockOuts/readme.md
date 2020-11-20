@@ -32,9 +32,11 @@ NOTE:
 Don't forget to set the following environment variables to make this app work:
 
 ```sh
-COSMOS_DB_KEY
-MS_CLIENT_ID
-MS_AUTHORITY
-MS_CLIENT_SECRET
+ENDPOINT='XXX'
+KEY='XXX'
+CLIENT_ID='XXX'
+AUTHORITY='XXX'
+CLIENT_SECRET='XXX'
+SLACK_WEBHOOK='XXX'
 ``` 
 Check the pinned message in our slack channel to get these values
