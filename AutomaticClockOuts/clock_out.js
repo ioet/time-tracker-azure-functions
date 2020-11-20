@@ -23,10 +23,7 @@ const doClockOut = async (context) => {
   await Promise.all(entries.map(async (timeEntryAsJson) => {
     const timeEntry = new TimeEntry(timeEntryAsJson)
     if (timeEntry.needsToBeClockedOut()) {
-      const userToClockOut = findUser(users, timeEntry.timeEntry.owner_id);
-      if(!userToClockOut.includes(userToClockOut)){
-        usersWithClockOut.push(userToClockOut)
-      }
+      usersWithClockOut.push(findUser(users, timeEntry.timeEntry.owner_id));
       timeEntryAsJson.end_date = timeEntry.getTimeToClockOut()
       await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson)
       totalClockOutsExecuted++
