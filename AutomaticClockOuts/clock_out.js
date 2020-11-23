@@ -3,30 +3,27 @@ const config = require("./config");
 const TimeEntry = require('./time_entry');
 const axios = require('axios');
 const MsalClient = require('./msal_client')
+const TimeEntryDao = require('./time_entry_dao')
 
-const doClockOut = async (context, timer) => {
+const doClockOut = async (context) => {
   context.log(`I am going to check how many entries were not clocked out ${new Date()}`);
-  const {endpoint, key, databaseId, containerId, slackWebHook} = config;
+
+  const { endpoint, key, databaseId, slackWebHook } = config;
   const client = new CosmosClient({endpoint, key});
   const database = client.database(databaseId);
-  const container = database.container(containerId);
+  const timeEntryDao = new TimeEntryDao(database);
+
   const response = await MsalClient.findUsersInMS();
   const users = response.data.value;
-
-  const QUERY_WITHOUT_END_DATE =
-    "SELECT * FROM c WHERE (NOT IS_DEFINED(c.end_date) OR IS_NULL(c.end_date) = true)  AND IS_DEFINED(c.start_date)"
-
-  const {resources: entries} = await container.items
-    .query({query: QUERY_WITHOUT_END_DATE})
-    .fetchAll();
-
+  const {resources: entries} = await timeEntryDao.getEntriesWithNoEndDate();
   context.log(`Checking for time-entries that need to be clocked out`);
+
   let totalClockOutsExecuted = 0;
   const usersWithClockOut = []
   await Promise.all(entries.map(async (timeEntryAsJson) => {
     const timeEntry = new TimeEntry(timeEntryAsJson)
     if (timeEntry.needsToBeClockedOut()) {
-      usersWithClockOut.push(findUser(users, timeEntry.timeEntry.owner_id))
+      usersWithClockOut.push(findUser(users, timeEntry.timeEntry.owner_id));
       timeEntryAsJson.end_date = timeEntry.getTimeToClockOut()
       await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson)
       totalClockOutsExecuted++
