@@ -1,0 +1,31 @@
+name: CD Azure Functions deployment
+
+
+on:
+  # Trigger the workflow on pull request but only for the master branch
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+env:
+  AZURE_FUNCTIONAPP_NAME: 'time-tracker-azure-functions'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'AutomaticClockOuts'      # set this to the path to your web app project, defaults to the repository root
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: 'run npm'
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          cd AutomaticClockOuts
+          npm i -g azure-functions-core-tools@core --unsafe-perm true
+          az login -u ${{ secrets.AZ_USERNAME }} -p ${{ secrets.AZ_PASSWORD }}
+          npm install
+          func settings add FUNCTIONS_WORKER_RUNTIME node
+          func azure functionapp publish time-tracker-azure-functions --node
