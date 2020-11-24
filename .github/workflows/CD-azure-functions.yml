@@ -1,0 +1,38 @@
+name: CD process to deploy to AzureFuncions
+
+on:
+  # Trigger the workflow on pull request but only for the master branch
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    name: Deploy to Azure
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout of master
+        uses: actions/checkout@master
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: 'run: npm install and build'
+        run: |
+          cd AutomaticClockOuts
+          npm i azure-functions-core-tools@core --unsafe-perm true
+          npm install
+          func azure functionapp publish time-tracker-azure-functions
+
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2.0.0
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_ICON: https://avatars.slack-edge.com/2020-04-14/1055222096486_7b0bf047c32f9f666b69_48.jpg
+          SLACK_USERNAME: 'heisenberg-deploy-azure-functions:'
