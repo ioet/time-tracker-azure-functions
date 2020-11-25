@@ -18,9 +18,10 @@ jobs:
       - name: 'run npm'
         run: |
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          cd AutomaticClockOuts
           npm i -g azure-functions-core-tools@core --unsafe-perm true
-          az login -u ${{ secrets.AZ_USERNAME }} -p ${{ secrets.AZ_PASSWORD }}
+          cd AutomaticClockOuts
           npm install
+          cd ../
+          az login -u ${{ secrets.AZ_USERNAME }} -p ${{ secrets.AZ_PASSWORD }}
           func settings add FUNCTIONS_WORKER_RUNTIME node
           func azure functionapp publish time-tracker-azure-functions --node
