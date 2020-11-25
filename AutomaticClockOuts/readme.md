@@ -29,7 +29,7 @@ func azure functionapp publish time-tracker-azure-functions
 ```
 
 NOTE:
-Don't forget to set the following environment variables to make this app work locally.:
+Don't forget to set the following environment variables to make this app work locally:
 
 ```sh
 ENDPOINT='XXX'
