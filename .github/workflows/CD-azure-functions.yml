@@ -12,15 +12,17 @@ jobs:
     name: Deploy to Azure
     runs-on: ubuntu-latest
     timeout-minutes: 60
+#    env:
+#      BUILD_PATH: './AutomaticClockOuts'
 
     steps:
       - name: Checkout of master
         uses: actions/checkout@master
 
       - name: Set up Node.js version
-          uses: actions/setup-node@v1
-          with:
-            node-version: '10.x'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
 
       - name: 'run: npm install and build'
         working-directory: ./AutomaticClockOuts
