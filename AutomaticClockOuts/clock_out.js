@@ -11,6 +11,7 @@ const doClockOut = async (context) => {
   const { endpoint, key, databaseId, slackWebHook } = config;
   const client = new CosmosClient({endpoint, key});
   const database = client.database(databaseId);
+  const container = database.container('time_entry');
   const timeEntryDao = new TimeEntryDao(database);
 
   const response = await MsalClient.findUsersInMS();
