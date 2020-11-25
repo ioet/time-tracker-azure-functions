@@ -27,6 +27,8 @@ jobs:
       - name: 'run: npm install and build'
         working-directory: ./AutomaticClockOuts
         run: |
+          npm install nvm
+          nvm install 10.16.3
           npm i -g azure-functions-core-tools@core --unsafe-perm true
           npm install
           func azure functionapp publish time-tracker-azure-functions
