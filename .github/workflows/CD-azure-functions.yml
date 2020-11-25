@@ -1,15 +1,15 @@
 name: CD process to deploy to AzureFuncions
 
 on:
-  # Trigger the workflow on pull request but only for the master branch
-  pull_request:
-    types: [closed]
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
     branches:
-      - master
+      - pipe
 
 env:
-  AZURE_FUNCTIONAPP_NAME: AutomaticClockOuts    # set this to your application's name
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './AutomaticClockOuts'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_NAME: 'time-tracker-azure-functions'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'AutomaticClockOuts'      # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build-and-deploy:
@@ -21,14 +21,11 @@ jobs:
           node-version: '10.x'
       - name: 'run npm'
         run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          npm install
-          npm run build --if-present
-          popd
-      - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
-        id: fa
-        with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.SCM_CREDENTIALS }}
+          ls
+#      - name: 'Run Azure Functions Action'
+#        uses: Azure/functions-action@v1
+#        id: fa
+#        with:
+#          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+#          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+#          publish-profile: ${{ secrets.SCM_CREDENTIALS }}
