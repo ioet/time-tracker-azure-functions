@@ -22,5 +22,5 @@ jobs:
       - uses: Azure/functions-action@v1
         id: AutomaticClockOuts
         with:
-          app-name: time-tracker-azure-functions
+          app-name: AutomaticClockOuts
           publish-profile: ${{ secrets.SCM_CREDENTIALS }}
