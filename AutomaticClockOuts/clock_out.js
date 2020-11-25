@@ -32,7 +32,7 @@ const doClockOut = async (context) => {
   if(totalClockOutsExecuted > 0){
     axios.post(slackWebHook,
       {
-        "text": `Hey guys, I did a clock out for you. \nVisit https://timetracker.ioet.com/ and set the right end time for your entries :pls: \n- ${usersWithClockOut.join('\n- ')}`
+        "text": `Hey guys, I just did a clock out for you. \nPlease visit https://timetracker.ioet.com/ and set the right end time for your entries :pls: \n- ${usersWithClockOut.join('\n- ')}`
       }
     )
       .then(function (response) {
