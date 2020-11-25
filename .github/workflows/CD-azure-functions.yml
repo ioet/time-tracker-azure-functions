@@ -1,4 +1,4 @@
-name: CD process to deploy to AzureFuncions
+name: Other stuff
 
 on:
   # Trigger the workflow on push or pull request,
@@ -21,7 +21,12 @@ jobs:
           node-version: '10.x'
       - name: 'run npm'
         run: |
-          ls
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          cd AutomaticClockOuts
+          npm i -g azure-functions-core-tools@core --unsafe-perm true
+          az login -u ${{ env.AZ_USERNAME }} -p {{ env.AZ_PASSWORD }}
+          npm install
+          func azure functionapp publish time-tracker-azure-functions
 #      - name: 'Run Azure Functions Action'
 #        uses: Azure/functions-action@v1
 #        id: fa
