@@ -26,6 +26,7 @@ jobs:
           npm i -g azure-functions-core-tools@core --unsafe-perm true
           az login -u ${{ secrets.AZ_USERNAME }} -p ${{ secrets.AZ_PASSWORD }}
           npm install
+          func settings add FUNCTIONS_WORKER_RUNTIME node
           func azure functionapp publish time-tracker-azure-functions --node
 #      - name: 'Run Azure Functions Action'
 #        uses: Azure/functions-action@v1
