@@ -17,10 +17,10 @@ jobs:
       - name: Checkout of master
         uses: actions/checkout@master
 
-      - name: Set Node.js 10.x
-          uses: actions/setup-node@master
+      - name: Set up Node.js version
+          uses: actions/setup-node@v1
           with:
-            version: 10.x
+            node-version: '10.x'
 
       - name: 'run: npm install and build'
         working-directory: ./AutomaticClockOuts
