@@ -11,7 +11,8 @@ class TimeEntry {
   }
 
   getTimeToClockOut() {
-    return moment().subtract(this.timeEntry.timezone_offset, 'minutes').toISOString()
+    return moment(this.timeEntry.start_date).utc()
+      .add(this.timeEntry.timezone_offset, 'minutes').toISOString()
   }
 
   needsToBeClockedOut() {
