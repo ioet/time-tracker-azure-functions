@@ -2,27 +2,23 @@ const moment = require("moment")
 
 class TimeEntry {
 
-    constructor(timeEntry) {
-        this.timeEntry = timeEntry;
-    }
+  constructor(timeEntry) {
+    this.timeEntry = timeEntry;
+  }
 
-    getMidnightInTimeEntryZone(){
-        return moment(this.timeEntry.start_date).utc()
-            .subtract(this.timeEntry.timezone_offset, 'minutes').endOf('day')
-    }
+  getStartTimeInUTC() {
+    return moment(this.timeEntry.start_date).utcOffset(this.timeEntry.timezone_offset);
+  }
 
-    getCurrentTimeInTimeEntryZone(){
-        return moment().utc().subtract(this.timeEntry.timezone_offset, 'minutes')
-    }
+  getTimeToClockOut() {
+    return moment().utc().subtract(this.timeEntry.timezone_offset, 'minutes').toISOString()
+  }
 
-    getTimeToClockOut(){
-        return moment(this.timeEntry.start_date).utc().endOf('day')
-            .add(this.timeEntry.timezone_offset, 'minutes').toISOString()
-    }
-
-    needsToBeClockedOut(){
-        return this.getMidnightInTimeEntryZone().isBefore(this.getCurrentTimeInTimeEntryZone())
-    }
+  needsToBeClockedOut() {
+    const currentTimeInUTC = moment().utc()
+    const minutesRunning = moment.duration(currentTimeInUTC.diff(this.getStartTimeInUTC())).asMinutes()
+    return minutesRunning > 720;
+  }
 }
 
 module.exports = TimeEntry

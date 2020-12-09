@@ -8,7 +8,7 @@ const TimeEntryDao = require('./time_entry_dao')
 const doClockOut = async (context) => {
   context.log(`I am going to check how many entries were not clocked out ${new Date()}`);
 
-  const { endpoint, key, databaseId, slackWebHook } = config;
+  const {endpoint, key, databaseId, slackWebHook} = config;
   const client = new CosmosClient({endpoint, key});
   const database = client.database(databaseId);
   const container = database.container('time_entry');
@@ -30,10 +30,10 @@ const doClockOut = async (context) => {
       totalClockOutsExecuted++
     }
   }));
-  if(totalClockOutsExecuted > 0){
+  if (totalClockOutsExecuted > 0) {
     axios.post(slackWebHook,
       {
-        "text": `Hey guys, I did a clock out for you. \nPlease visit https://timetracker.ioet.com/ and set the right end time for your entries :pls: \n- ${usersWithClockOut.join('\n- ')}`
+        "text": `OMG, you have been working more than 12 hours in a raw. \nPlease take a break and visit https://timetracker.ioet.com/ to set the right end time for your entries, we just did a clock out for you :wink: \n- ${usersWithClockOut.join('\n- ')}`
       }
     )
       .then(function (response) {
@@ -47,8 +47,8 @@ const doClockOut = async (context) => {
 }
 
 const findUser = (users, id) => {
-  const user = users.find( user => user.objectId === id)
+  const user = users.find(user => user.objectId === id)
   return user.displayName
 }
 
-module.exports = { doClockOut };
+module.exports = {doClockOut};
