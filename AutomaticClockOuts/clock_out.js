@@ -33,7 +33,7 @@ const doClockOut = async (context) => {
   if (totalClockOutsExecuted > 0) {
     axios.post(slackWebHook,
       {
-        "text": `OMG, you have been working more than 12 hours in a raw. \nPlease take a break and visit https://timetracker.ioet.com/ to set the right end time for your entries, we just did a clock out for you :wink: \n- ${usersWithClockOut.join('\n- ')}`
+        "text": `OMG, you have been working more than 12 hours in a row. \nPlease take a break and visit https://timetracker.ioet.com/ to set the right end time for your entries, we just did a clock out for you :wink: \n- ${usersWithClockOut.join('\n- ')}`
       }
     )
       .then(function (response) {
