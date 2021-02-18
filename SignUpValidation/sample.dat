@@ -1,0 +1,14 @@
+{
+  "ui_locales": "en-US",
+  "email": "example@gmail.ec",
+  "surname": "Test User",
+  "displayName": "Test User",
+  "givenName": "Test User",
+  "identities": [
+    {
+      "signInType": "federated",
+      "issuer": "google.com",
+      "issuerAssignedId": "102373679322388401018"
+    }
+  ]
+}
