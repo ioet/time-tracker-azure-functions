@@ -2,7 +2,7 @@ module.exports = async function (context, req) {
   context.log("JavaScript HTTP trigger function processed a request v1.");
   const API_VERSION = "1.0.0";
 
-  // parse Basic Auth username and password
+  // Parse Basic Auth username and password
   var header = req.headers["authorization"] || "", // get the header
     token = header.split(/\s+/).pop() || "", // and the encoded auth token
     auth = new Buffer.from(token, "base64").toString(), // convert from base64
@@ -40,7 +40,7 @@ module.exports = async function (context, req) {
   // Log the request body
   context.log(`Request body: ${JSON.stringify(req.body)}`);
 
-  // get domain of email address
+  // Get domain of email address
   const domain = req.body.email.split("@")[1];
   const allowedDomains = ["ioet.com"];
 
