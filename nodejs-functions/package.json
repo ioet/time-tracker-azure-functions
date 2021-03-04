@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-functions",
+  "version": "1.0.0",
+  "description": "Azure Functions sample for the Serverless framework",
+  "scripts": {
+    "test": "echo \"No tests yet...\"",
+    "start": "func host start"
+  },
+  "keywords": [
+    "azure",
+    "serverless"
+  ],
+  "dependencies": {
+    "@azure/cosmos": "3.5.2",
+    "@azure/msal-node": "^1.0.0-alpha.5",
+    "axios": "^0.20.0",
+    "dotenv": "^8.2.0",
+    "moment": "^2.27.0",
+    "msal": "^1.4.0"
+  },
+  "devDependencies": {
+    "serverless-azure-functions": "^2.1.0"
+  }
+}
