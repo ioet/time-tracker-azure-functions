@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- NodeJS 12
+- NodeJS 10
 
 ## Considerations
 
@@ -28,7 +28,18 @@ Install azure plugin
 serverless plugin install --name serverless-azure-functions
 ```
 
-
 ```bash
 serverless plugin install --name serverless-azure-functions
+```
+
+Install Azure CLI
+
+[More Information](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+```bash
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+Login
+```bash
+az login
 ```
