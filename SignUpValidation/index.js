@@ -43,10 +43,14 @@ module.exports = async function (context, req) {
   // Get domain of email address
   const domain = req.body.email.split("@")[1];
   const allowedDomains = ["ioet.com"];
+  const allowedEmail = process.env["EMAIL_ENABLED_FOR_REGISTRATION"];
 
   context.log("Validation: ", allowedDomains.includes(domain.toLowerCase()));
   // Check that the domain of the email is from a specific other tenant
-  if (!allowedDomains.includes(domain.toLowerCase())) {
+  if (
+    !allowedDomains.includes(domain.toLowerCase()) &&
+    allowedEmail !== req.body.email.toLowerCase()
+  ) {
     context.res = {
       body: {
         version: API_VERSION,
