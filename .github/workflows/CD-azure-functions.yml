@@ -16,12 +16,12 @@ jobs:
         with:
           node-version: '10.x'
       # - name: 'run npm'
-      #   run: |
-      #     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      #     npm i -g azure-functions-core-tools@core --unsafe-perm true
-      #     cd AutomaticClockOuts
-      #     npm install
-      #     cd ../
-      #     az login -u ${{ secrets.AZ_USERNAME }} -p ${{ secrets.AZ_PASSWORD }}
-      #     func settings add FUNCTIONS_WORKER_RUNTIME node
-      #     func azure functionapp publish time-tracker-azure-functions --node
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          npm i -g azure-functions-core-tools@core --unsafe-perm true
+          cd AutomaticClockOuts
+          npm install
+          cd ../
+          az login -u ${{ secrets.AZ_USERNAME }} -p ${{ secrets.AZ_PASSWORD }}
+          func settings add FUNCTIONS_WORKER_RUNTIME node
+          func azure functionapp publish time-tracker-azure-functions --node
