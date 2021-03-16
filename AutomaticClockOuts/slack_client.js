@@ -1,7 +1,6 @@
 const { WebClient, LogLevel } = require("@slack/web-api");
-const { slackApiToken } = require("./config");
-
-const client = new WebClient(slackApiToken,{logLevel: LogLevel.DEBUG});
+const { slackApiToken, channelId } = require("./config");
+const client = new WebClient(slackApiToken, { logLevel: LogLevel.DEBUG });
 
 const findUsersInSlack = async () => {
   const response = await client.users.list();
@@ -15,4 +14,18 @@ const findUsersInSlack = async () => {
   return usersIdAndEmails;
 };
 
-module.exports = { findUsersInSlack };
+const sendMessage = (channel, message) => {
+  const params = { channel: channel, text: message };
+  client.chat.postMessage(params);
+};
+
+const sendMessageToUser = (userId, message) => {
+  sendMessage(userId, message);
+};
+
+// message to public channel
+const sendMessageToChannel = (message) => {
+  sendMessage(channelId, message);
+};
+
+module.exports = { findUsersInSlack, sendMessageToUser, sendMessageToChannel };

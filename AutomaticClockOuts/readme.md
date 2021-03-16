@@ -37,7 +37,7 @@ KEY='XXX'
 CLIENT_ID='XXX'
 AUTHORITY='XXX'
 CLIENT_SECRET='XXX'
-SLACK_WEBHOOK_NOTIFY='XXX'
 SLACK_TOKEN_NOTIFY='XXX'
+ID_CHANNEL_NOTIFY='XXX'
 ``` 
 Check the pinned message in our slack channel to get these values
