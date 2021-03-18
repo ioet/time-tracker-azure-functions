@@ -11,7 +11,7 @@ const doClockOut = async (context) => {
   context.log(`I am going to check how many entries were not clocked out ${new Date()}`);
 
   const { endpoint, key, databaseId } = config;
-  const client = new CosmosClient({ endpoint, key});
+  const client = new CosmosClient({ endpoint, key });
   const database = client.database(databaseId);
   const container = database.container('time_entry');
   const timeEntryDao = new TimeEntryDao(database);
@@ -56,5 +56,7 @@ const findSlackUserId = (users, email) => {
   const user = users.find(user => user.email === email);
   return user ? user.id : null
 }
+
+doClockOut(console)
 
 module.exports = { doClockOut };
