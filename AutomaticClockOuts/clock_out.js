@@ -24,7 +24,6 @@ const doClockOut = async (context) => {
   context.log(`Checking for time-entries that need to be clocked out`);
 
   let totalClockOutsExecuted = 0;
-  const usersWithClockOut = [];
 
   await Promise.all(entries.map(async (timeEntryAsJson) => {
     const timeEntry = new TimeEntry(timeEntryAsJson)
@@ -32,7 +31,6 @@ const doClockOut = async (context) => {
       const user_email = findUserEmail(users, timeEntry.timeEntry.owner_id);
       const userId = findSlackUserId(slackUsers, user_email);
       if(userId){
-        usersWithClockOut.push("<@"+userId+">");
         SlackClient.sendMessageToUser(userId, CLOCK_OUT_MESSAGE);
       }
       timeEntryAsJson.end_date = timeEntry.getTimeToClockOut()
@@ -40,10 +38,7 @@ const doClockOut = async (context) => {
       totalClockOutsExecuted++
     }
   }));
-  if (usersWithClockOut.length) {
-    const ClockOutMessageChannel=`${CLOCK_OUT_MESSAGE} \n- ${usersWithClockOut.join('\n- ')}`;
-    SlackClient.sendMessageToChannel(ClockOutMessageChannel);
-  }
+  
   context.log(`I just clocked out ${totalClockOutsExecuted} entries, thanks are not needed...`);
 }
 
@@ -56,7 +51,5 @@ const findSlackUserId = (users, email) => {
   const user = users.find(user => user.email === email);
   return user ? user.id : null
 }
-
-doClockOut(console)
 
 module.exports = { doClockOut };
