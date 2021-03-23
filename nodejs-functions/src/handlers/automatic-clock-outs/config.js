@@ -6,8 +6,7 @@ const config = {
     clientId: process.env["CLIENT_ID"],
     authority: process.env["AUTHORITY"],
     clientSecret: process.env["CLIENT_SECRET"],
-    slackApiToken: process.env["SLACK_TOKEN_NOTIFY"],
-    channelId: process.env["ID_CHANNEL_NOTIFY"]
+    slackApiToken: process.env["SLACK_TOKEN_NOTIFY"]
 };
 
 module.exports = config;
