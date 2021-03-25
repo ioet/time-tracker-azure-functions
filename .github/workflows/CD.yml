@@ -15,14 +15,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-
-      - name: Azure CLI script
-        uses: azure/CLI@v1
+      - uses: azure/login@v1
         with:
-          azcliversion: 2.0.72
-          inlineScript: |
-            az account show
-            az storage -h{}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - run: |
+          az webapp list --query "[?state=='Running']"
   
       - uses: actions/setup-node@v1
         with:
