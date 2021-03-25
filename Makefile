@@ -5,5 +5,9 @@ help: Makefile
 install-dependencies-nodejs:
 	cd nodejs-functions ; pwd ; $(MAKE) install-dependencies-nodejs
 
+install-serverless-plugins:
+	serverless plugin install --name serverless-azure-functions
+
 deploy-nodejs:
 	cd nodejs-functions ; pwd ; $(MAKE) deploy
+
