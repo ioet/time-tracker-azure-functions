@@ -15,15 +15,13 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
+
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - run: |
-          az webapp list --query "[?state=='Running']"
   
-      - uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      # - uses: actions/setup-node@v1
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
 
       
