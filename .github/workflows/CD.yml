@@ -16,11 +16,18 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Checkout Repository
-        uses: actions/checkout@master
-
+        uses: actions/checkout@master    
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            az account show
+            az storage -h{}
+  
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
