@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Azure Login
         uses: azure/login@v1
-        with:
+        env:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Checkout Repository
