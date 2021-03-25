@@ -28,8 +28,13 @@ jobs:
       - name: Install Serverless
         run: npm install
 
-      - name: Install Serverless Plugins
-        run: make install-serverless-plugins
+      - name: Sops Binary Installer
+        uses: mdgreenwald/mozilla-sops-action@v1
+        id: sops
+        with:
+          version: 'stable' # default is latest stable
+      # - name: Install Serverless Plugins
+      #   run: make install-serverless-plugins
 
 
       
