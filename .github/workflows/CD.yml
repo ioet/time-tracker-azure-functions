@@ -24,17 +24,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Install Serverless
-        run: npm install
-
-      - name: Sops Binary Installer
-        uses: mdgreenwald/mozilla-sops-action@v1
-        id: sops
-        with:
-          version: 'stable' # default is latest stable
-      # - name: Install Serverless Plugins
-      #   run: make install-serverless-plugins
-
-
+      - name: Install SOPS
+        run: |
+          apt-get install wget
+          wget https://github.com/mozilla/sops/releases/download/v3.7.0/sops_3.7.0_amd64.deb
+          dpkg -i sops_3.7.0_amd64.deb
       
+

@@ -24,9 +24,7 @@ appsettings.json
 local.settings.json
 
 node_modules
-
-
 .idea/
 .vscode/
-serverless.yml
 .serverless
+keys.yml.bk

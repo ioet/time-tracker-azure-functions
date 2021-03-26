@@ -1,3 +1,4 @@
+SECRETS=keys.yml
 help: Makefile
 	@sed -n 's/^## //p' $<
 
@@ -7,3 +8,9 @@ install-dependencies-nodejs:
 
 deploy:
 	sls deploy
+
+sops-encrypt:
+	sops -e -i ${SECRETS}
+
+sops-decrypt:
+	sops -e -i ${SECRETS}
