@@ -13,4 +13,4 @@ sops-encrypt:
 	sops -e -i ${SECRETS}
 
 sops-decrypt:
-	sops -e -i ${SECRETS}
+	sops -d -i ${SECRETS}
