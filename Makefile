@@ -11,3 +11,5 @@ install-serverless-plugins:
 deploy-nodejs:
 	cd nodejs-functions ; pwd ; $(MAKE) deploy
 
+sops-decrypt-nodejs:
+	cd nodejs-functions ; pwd ; $(MAKE) sops-decrypt
