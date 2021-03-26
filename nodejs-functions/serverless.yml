@@ -1,0 +1,34 @@
+service: nodejs-functions
+frameworkVersion: "2"
+
+provider:
+    name: azure
+    region: West US 2
+    runtime: nodejs12
+    # linux is the only operating system available for python
+    os: linux
+    # prefix of generated resource name
+    prefix: time-tracker
+    environment:
+        ENDPOINT: ${file(keys.yml):ENDPOINT}
+        KEY: ${file(keys.yml):KEY}
+        CLIENT_ID: ${file(keys.yml):CLIENT_ID}
+        AUTHORITY: ${file(keys.yml):AUTHORITY}
+        CLIENT_SECRET: ${file(keys.yml):CLIENT_SECRET}
+        SLACK_TOKEN_NOTIFY: ${file(keys.yml):SLACK_TOKEN_NOTIFY}
+        TEST: ${file(keys.yml):TEST}
+
+custom:
+    globalSchedule: cron(0 0 * * *)
+plugins:
+    - serverless-azure-functions
+package:
+    exclude:
+        - local.settings.json
+        - .vscode/**
+functions:
+    automatic-clock-outs:
+        prefix: automatic-clock-outs
+        handler: src/handlers/automatic-clock-outs/index.js
+        events:
+            - timer: ${self:custom.globalSchedule}

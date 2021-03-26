@@ -1,0 +1,3 @@
+creation_rules:
+  - path_regex: keys.yml.*
+    azure_keyvault: https://time-tracker-secrets.vault.azure.net/keys/tt-functions-sops/021de58b06a1497881bbacf4c82b83d7

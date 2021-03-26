@@ -1,0 +1,53 @@
+name: CD process to deploy to AzureFuncions
+
+on:
+  # Trigger the workflow on pull request but only for the master branch
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            az account show
+            az storage -h
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install SOPS
+        run: |
+          sudo apt-get install wget
+          wget https://github.com/mozilla/sops/releases/download/v3.7.0/sops_3.7.0_amd64.deb
+          sudo dpkg -i sops_3.7.0_amd64.deb
+
+      - name: Decrypt Secrets
+        run: make sops-decrypt-nodejs
+
+      - name: Install NodeJs dependencies
+        run: make install-dependencies-nodejs
+
+      - name: Install Serverless Framework
+        run: sudo npm install -g serverless
+
+      - name: Install Serverless Plugins
+        run: make deploy-nodejs
+
