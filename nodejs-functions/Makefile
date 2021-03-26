@@ -14,3 +14,6 @@ sops-encrypt:
 
 sops-decrypt:
 	sops -d -i ${SECRETS}
+
+install-serverless-plugins:
+	serverless plugin install --name serverless-azure-functions

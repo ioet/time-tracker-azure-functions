@@ -40,5 +40,8 @@ jobs:
       - name: Install Serverless Framework
         run: sudo npm install -g serverless
 
-      - name: Install Serverless Framework
+      - name: Install Serverless Plugins
+        run: make install-serverless-plugins
+
+      - name: Deploy
         run: make install-serverless-plugins
