@@ -44,4 +44,4 @@ jobs:
         run: make install-serverless-plugins
 
       - name: Deploy
-        run: make install-serverless-plugins
+        run: make deploy-nodejs
