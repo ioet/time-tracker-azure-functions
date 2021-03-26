@@ -51,6 +51,6 @@ jobs:
       - name: Install Serverless Plugins
         run: make install-serverless-plugins
 
-      - name: Install Serverless Plugins
+      - name: Deploy
         run: make deploy-nodejs
 
