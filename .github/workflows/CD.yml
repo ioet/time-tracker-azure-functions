@@ -37,11 +37,14 @@ jobs:
       - name: Install NodeJs dependencies
         run: make install-dependencies-nodejs
 
-      - name: Install Serverless Framework
-        run: sudo npm install -g serverless
+      # - name: Install Serverless Framework
+      #   run: sudo npm install -g serverless
 
-      - name: Install Serverless Plugins
-        run: make install-serverless-plugins
+      # - name: Install Serverless Plugins
+      #   run: make install-serverless-plugins
 
-      - name: Deploy
-        run: make deploy-nodejs
+      - name: Install VPC Plugin and Deploy
+        uses: serverless/github-action@v1.53.0
+        with:
+          args: -c "cd nodejs-functions ; pwd ; serverless plugin install --name serverless-azure-functions && serverless deploy"
+          entrypoint: /bin/bash
