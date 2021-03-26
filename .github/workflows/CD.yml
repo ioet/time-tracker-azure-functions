@@ -19,7 +19,15 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-  
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            az account show
+            az storage -h
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -37,14 +45,12 @@ jobs:
       - name: Install NodeJs dependencies
         run: make install-dependencies-nodejs
 
-      # - name: Install Serverless Framework
-      #   run: sudo npm install -g serverless
+      - name: Install Serverless Framework
+        run: sudo npm install -g serverless
 
-      # - name: Install Serverless Plugins
-      #   run: make install-serverless-plugins
+      - name: Install Serverless Plugins
+        run: make install-serverless-plugins
 
-      - name: Install VPC Plugin and Deploy
-        uses: serverless/github-action@master
-        with:
-          args: -c "cd nodejs-functions ; pwd ; serverless plugin install --name serverless-azure-functions && serverless deploy"
-          entrypoint: /bin/bash
+      - name: Install Serverless Plugins
+        run: make deploy-nodejs
+

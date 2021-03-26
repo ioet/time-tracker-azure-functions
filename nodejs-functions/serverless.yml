@@ -1,5 +1,6 @@
 service: nodejs-functions
 frameworkVersion: "2"
+
 provider:
     name: azure
     region: West US 2

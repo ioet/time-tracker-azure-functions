@@ -9,7 +9,7 @@ install-serverless-plugins:
 	cd nodejs-functions ; pwd ; make install-serverless-plugins
 
 deploy-nodejs:
-	cd nodejs-functions ; pwd ; $(MAKE) deploy
+	cd nodejs-functions ; pwd ; make deploy
 
 sops-decrypt-nodejs:
 	cd nodejs-functions ; pwd ; make sops-decrypt
