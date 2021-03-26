@@ -34,3 +34,11 @@ jobs:
       - name: Decrypt Secrets
         run: make sops-decrypt-nodejs
 
+      - name: Install NodeJs dependencies
+        run: make install-dependencies-nodejs
+
+      - name: Install Serverless Framework
+        run: sudo npm install -g serverless
+
+      - name: Install Serverless Framework
+        run: make install-serverless-plugins
