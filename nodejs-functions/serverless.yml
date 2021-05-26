@@ -5,9 +5,7 @@ provider:
     name: azure
     region: West US 2
     runtime: nodejs12
-    # linux is the only operating system available for python
     os: linux
-    # prefix of generated resource name
     prefix: time-tracker
     environment:
         ENDPOINT: ${file(keys.yml):ENDPOINT}

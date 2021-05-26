@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless-azure-functions": "^2.1.0"
+    "serverless-azure-functions": "^2.1.0",
+    "serverless-offline-python": "^3.22.2"
   }
 }
