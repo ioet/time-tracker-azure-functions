@@ -1,0 +1,153 @@
+service: python-functions-test1
+frameworkVersion: '2'
+
+provider:
+  name: azure
+  region: West US 2
+  runtime: python3.8 # python3.7 or python3.8 also available
+  os: linux  # linux is the only operating system available for python
+  prefix: time-tracker
+  environment: # these will be created as application settings
+    COSMOS_DATABASE_URI: ${file(keys.yml):COSMOS_DATABASE_URI}
+
+plugins:
+  - serverless-azure-functions
+  - serverless-offline-python
+package:
+  # include:
+  #   - include-me.py
+  #   - include-me-dir/**
+  exclude:
+    - env/**
+    - .env/**
+    - local.settings.json
+    - .vscode/**
+    - __pycache__/**
+    - node_modules/**
+    - .python_packages/**
+    - .funcignore
+    - package.json
+    - package-lock.json
+    - .gitignore
+    - .git/**
+  # - exclude-me.py
+  # - exclude-me-dir/**
+
+functions:
+  handle_activity_events_trigger:
+    handler: src/handlers/handle_activity_events_trigger/__init__.py
+    events:
+      - cosmosDB: true
+        x-azure-settings:
+          name: documents # name of input parameter in function signature
+          direction: in
+          leaseCollectionName: leases
+          connectionStringSetting: COSMOS_DATABASE_URI
+          databaseName: time-tracker-db
+          collectionName: activity
+          createLeaseCollectionIfNotExists: true
+          leaseCollectionPrefix: activity_
+      - cosmosDB: true
+        x-azure-settings:
+          connectionStringSetting: COSMOS_DATABASE_URI
+          direction: out
+          name: events # name of input parameter in function signature
+          databaseName: time-tracker-db
+          collectionName: event
+          createIfNotExists: true # A boolean value to indicate whether the collection is created 
+          createLeaseCollectionIfNotExists: true
+
+  handle_customer_trigger:
+    handler: src/handlers/handle_customer_trigger/__init__.py
+    events:
+      - cosmosDB: true
+        x-azure-settings:
+          name: documents # name of input parameter in function signature
+          direction: in
+          connectionStringSetting: COSMOS_DATABASE_URI
+          databaseName: time-tracker-db
+          collectionName: customer
+          createLeaseCollectionIfNotExists: true
+          leaseCollectionPrefix: customer_
+      - cosmosDB: true
+        x-azure-settings:
+          direction: out
+          name: events # name of input parameter in function signature
+          databaseName: time-tracker-db
+          collectionName: event
+          leaseCollectionName: leases
+          createLeaseCollectionIfNotExists: true
+          connectionStringSetting: COSMOS_DATABASE_URI
+          createIfNotExists: true # A boolean value to indicate whether the collection is created 
+
+  handle_project_events_trigger:
+    handler: src/handlers/handle_project_events_trigger/__init__.py
+    events:
+      - cosmosDB: true
+        x-azure-settings:
+          name: documents # name of input parameter in function signature
+          direction: in
+          leaseCollectionName: leases
+          connectionStringSetting: COSMOS_DATABASE_URI
+          databaseName: time-tracker-db
+          collectionName: project
+          createLeaseCollectionIfNotExists: true
+          leaseCollectionPrefix: project_
+      - cosmosDB: true
+        x-azure-settings:
+          direction: out
+          name: events # name of input parameter in function signature
+          databaseName: time-tracker-db
+          collectionName: event
+          leaseCollectionName: leases
+          createLeaseCollectionIfNotExists: true
+          connectionStringSetting: COSMOS_DATABASE_URI
+          createIfNotExists: true # A boolean value to indicate whether the collection is created
+
+  handle_project_type_events_trigger:
+    handler: src/handlers/handle_project_type_events_trigger/__init__.py
+    events:
+      - cosmosDB: true
+        x-azure-settings:
+          name: documents # name of input parameter in function signature
+          direction: in
+          leaseCollectionName: leases
+          connectionStringSetting: COSMOS_DATABASE_URI
+          databaseName: time-tracker-db
+          collectionName: project_type
+          createLeaseCollectionIfNotExists: true
+          leaseCollectionPrefix: project_type_
+      - cosmosDB: true
+        x-azure-settings:
+          direction: out
+          name: events # name of input parameter in function signature
+          databaseName: time-tracker-db
+          collectionName: event
+          leaseCollectionName: leases
+          createLeaseCollectionIfNotExists: true
+          connectionStringSetting: COSMOS_DATABASE_URI
+          createIfNotExists: true # A boolean value to indicate whether the collection is created 
+
+  handle_time_entry_events_trigger:
+    handler: src/handlers/handle_time_entry_events_trigger/__init__.py
+    events:
+      - cosmosDB: true
+        x-azure-settings:
+          name: documents # name of input parameter in function signature
+          direction: in
+          leaseCollectionName: leases
+          connectionStringSetting: COSMOS_DATABASE_URI
+          databaseName: time-tracker-db
+          collectionName: time_entry
+          createLeaseCollectionIfNotExists: true
+          leaseCollectionPrefix: time_entry_
+      - cosmosDB: true
+        x-azure-settings:
+          direction: out
+          name: events # name of input parameter in function signature
+          databaseName: time-tracker-db
+          collectionName: event
+          leaseCollectionName: leases
+          createLeaseCollectionIfNotExists: true
+          connectionStringSetting: COSMOS_DATABASE_URI
+          createIfNotExists: true # A boolean value to indicate whether the collection is created 
