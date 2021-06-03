@@ -5,7 +5,7 @@ from datetime import datetime
 import azure.functions as func
 
 
-def main(documents: func.DocumentList, events: func.Out[func.Document]):
+def main(documents: func.DocumentList) -> func.Document:
     if documents:
         new_events = func.DocumentList()
 
@@ -18,7 +18,7 @@ def main(documents: func.DocumentList, events: func.Out[func.Document]):
                     "id": str(uuid.uuid4()),
                     "date": datetime.utcnow().isoformat(),
                     "user_id": event_context.get("user_id"),
-                    "action": event_context.get("action"),
+                    "action": event_context.get("action") + 'delete_me',
                     "description": event_context.get("description"),
                     "item_id": doc.get("id"),
                     "container_id": event_context.get("container_id"),
@@ -29,6 +29,7 @@ def main(documents: func.DocumentList, events: func.Out[func.Document]):
                 logging.warning("- Not saved!")
 
         if len(new_events):
-            events.set(new_events)
+            return new_events
+            
         else:
             logging.warning("No valid events were found!")
