@@ -5,7 +5,7 @@ const TimeEntry = require('./time_entry');
 const MsalClient = require('./msal_client');
 const TimeEntryDao = require('./time_entry_dao');
 const SlackClient = require('./slack_client');
-const { CLOCK_OUT_MESSAGE } = require('./constants');
+const { CLOCK_OUT_MESSAGE, CLOCK_OUT_MESSAGE_MIDNIGHT } = require('./constants');
 
 const doClockOut = async (context) => {
   context.log(`I am going to check how many entries were not clocked out ${new Date()}`);
@@ -26,10 +26,11 @@ const doClockOut = async (context) => {
   let totalClockOutsExecuted = 0;
 
   await Promise.all(entries.map(async (timeEntryAsJson) => {
-    const timeEntry = new TimeEntry(timeEntryAsJson)
+    const timeEntry = new TimeEntry(timeEntryAsJson);
+    const user_email = findUserEmail(users, timeEntry.timeEntry.owner_id);
+    const userId = findSlackUserId(slackUsers, user_email);
+
     if (timeEntry.needsToBeClockedOut()) {
-      const user_email = findUserEmail(users, timeEntry.timeEntry.owner_id);
-      const userId = findSlackUserId(slackUsers, user_email);
       if(userId){
         SlackClient.sendMessageToUser(userId, CLOCK_OUT_MESSAGE);
       }
@@ -37,7 +38,16 @@ const doClockOut = async (context) => {
       await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson)
       totalClockOutsExecuted++
     }
+
+    if(timeEntry.needsToBeClockedOutMidnight() && totalClockOutsExecuted > 0) {
+      if(userId){
+        SlackClient.sendMessageToUser(userId, CLOCK_OUT_MESSAGE_MIDNIGHT);
+      }
+      timeEntryAsJson.end_date = timeEntry.getTimeToClockOut()
+      await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson);
+    }
   }));
+
   
   context.log(`I just clocked out ${totalClockOutsExecuted} entries, thanks are not needed...`);
 }
