@@ -1,4 +1,5 @@
 AutomaticClockOuts/.env
+.env
 bin
 obj
 csx
