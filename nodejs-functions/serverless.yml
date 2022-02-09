@@ -19,7 +19,7 @@ provider:
 custom:
     globalSchedule: cron(0 0 * * *)
 plugins:
-    - serverless-azure-functions
+  - serverless-azure-functions
 package:
     exclude:
         - local.settings.json
