@@ -16,23 +16,27 @@ class TimeEntry {
 
   getMidnightInTimeEntryZone(){
     return moment(this.timeEntry.start_date).utc()
-        .subtract(this.timeEntry.timezone_offset, 'minutes').endOf('day')
+        .subtract(this.timeEntry.timezone_offset, 'minutes').endOf('day');
+  }
+
+  getTimeToClockOutMidnight(){
+    return moment().utc().endOf('day').toISOString();
   }
 
   getCurrentTimeInTimeEntryZone(){
-    return moment().utc().subtract(this.timeEntry.timezone_offset, 'minutes')
+    return moment().utc().subtract(this.timeEntry.timezone_offset, 'minutes');
   }
 
   needsToBeClockedOut() {
-    const currentTimeInUTC = moment().utc()
-    const minutesRunning = moment.duration(currentTimeInUTC.diff(this.getStartTimeInUTC())).asMinutes()
+    const currentTimeInUTC = moment().utc();
+    const minutesRunning = moment.duration(currentTimeInUTC.diff(this.getStartTimeInUTC())).asMinutes();
     return minutesRunning > 720;
   }
 
   needsToBeClockedOutMidnight(){
-    return this.getMidnightInTimeEntryZone().isBefore(this.getCurrentTimeInTimeEntryZone())
+    return this.getMidnightInTimeEntryZone().isBefore(this.getCurrentTimeInTimeEntryZone());
   }
 }
 
-module.exports = TimeEntry
+module.exports = TimeEntry;
 
