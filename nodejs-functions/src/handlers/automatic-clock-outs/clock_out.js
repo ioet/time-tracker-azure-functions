@@ -46,7 +46,7 @@ const doClockOut = async (context) => {
         if (userId) {
           SlackClient.sendMessageToUser(userId, CLOCK_OUT_MESSAGE_MIDNIGHT.replace('%user_name%', userName));
         }
-        timeEntryAsJson.end_date = timeEntry.getTimeToClockOut();
+        timeEntryAsJson.end_date = timeEntry.getTimeToClockOutMidnight();
         await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson);
       }
     })
@@ -62,8 +62,8 @@ const findUserData = (users, id) => {
   return user ? { userName: user.displayName.split(" ")[0], userEmail: _.first(user.otherMails) } : {};
 };
 
-const findSlackUserId = (users, email) => {
-  const user = users.find((user) => user.email === email);
+const findSlackUserId = (slackUsers, email) => {
+  const user = slackUsers.find((slackUser) => slackUser.email === email);
   return user ? user.id : null;
 };
 
