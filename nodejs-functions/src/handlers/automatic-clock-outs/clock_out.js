@@ -48,6 +48,7 @@ const doClockOut = async (context) => {
         }
         timeEntryAsJson.end_date = timeEntry.getTimeToClockOutMidnight();
         await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson);
+        totalClockOutsExecuted++;
       }
     })
   );
