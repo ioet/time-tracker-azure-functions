@@ -15,12 +15,11 @@ class TimeEntry {
   }
 
   getMidnightInTimeEntryZone(){
-    return moment(this.timeEntry.start_date).utc()
-        .subtract(this.timeEntry.timezone_offset, 'minutes').endOf('day');
+    return moment(this.timeEntry.start_date).utcOffset(this.timeEntry.timezone_offset * -1).endOf('day');
   }
 
   getTimeToClockOutMidnight(){
-    return moment().utc().endOf('day').toISOString();
+    return moment(this.timeEntry.start_date).utcOffset(this.timeEntry.timezone_offset * -1).endOf('day').toISOString();
   }
 
   getCurrentTimeInTimeEntryZone(){
