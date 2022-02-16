@@ -2,9 +2,8 @@ const axios = require('axios');
 const config = require('./config');
 
 const getToken = async () => {
-  const { clientId, userNameMS, userPasswordMS } = config;
-  const endpoint =
-    'https://ioetec.b2clogin.com/ioetec.onmicrosoft.com/B2C_1_accesstoken/oauth2/v2.0/token';
+  const { clientId, userNameMS, userPasswordMS, B2CLogin } = config;
+  const endpoint = B2CLogin;
 
   const params = new URLSearchParams();
 

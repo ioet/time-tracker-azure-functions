@@ -8,8 +8,8 @@ const config = {
     clientSecret: process.env["CLIENT_SECRET"],
     slackApiToken: process.env["SLACK_TOKEN_NOTIFY"],
     userNameMS: process.env["USER_NAME_MS"],
-    userPasswordMS: process.env["USER_PASSWORD_MS"]
-    
+    userPasswordMS: process.env["USER_PASSWORD_MS"],
+    B2CLogin = process.env["B2C_LOGIN"]
 };
 
 module.exports = config;

@@ -39,7 +39,7 @@ const doClockOut = async (context) => {
         await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson);
         totalClockOutsExecuted++;
       }
-      
+
       else if (timeEntry.needsToBeClockedOutMidnight()) {
         if (userId) {
           SlackClient.sendMessageToUser(userId, CLOCK_OUT_MESSAGE_MIDNIGHT.replace('%user_name%', userName));
