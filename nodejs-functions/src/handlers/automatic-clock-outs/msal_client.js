@@ -21,8 +21,7 @@ const getToken = async () => {
     },
   };
 
-  return await axios
-    .post(endpoint, params, headers)
+  return axios.post(endpoint, params, headers)
     .then((result) => {
       return result.data.access_token;
     })
@@ -41,7 +40,7 @@ const findUsersInMS = async () => {
     },
   };
 
-  return await axios.get(`${endpoint}/users`, headers);
+  return axios.get(`${endpoint}/users`, headers);
 };
 
 module.exports = { findUsersInMS };

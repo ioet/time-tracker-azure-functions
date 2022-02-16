@@ -8,9 +8,7 @@ const SlackClient = require('./slack_client');
 const { CLOCK_OUT_MESSAGE, CLOCK_OUT_MESSAGE_MIDNIGHT } = require('./constants');
 
 const doClockOut = async (context) => {
-  context.log(
-    `I am going to check how many entries were not clocked out ${new Date()}`
-  );
+  context.log(`I am going to check how many entries were not clocked out ${new Date()}`);
 
   const { endpoint, key, databaseId } = config;
   const client = new CosmosClient({ endpoint, key });
@@ -52,21 +50,17 @@ const doClockOut = async (context) => {
     })
   );
 
-  context.log(
-    `I just clocked out ${totalClockOutsExecuted} entries, thanks are not needed...`
-  );
+  context.log(`I just clocked out ${totalClockOutsExecuted} entries, thanks are not needed...`);
 };
 
 const findUserData = (users, id) => {
-  const user = users.find((user) => user.id === id);
-  return user
-    ? { userName: user.name.split(' ')[0], userEmail: user.email }
-    : {};
+  const targetUser = users.find((user) => user.id === id);
+  return targetUser ? { userName: targetUser.name.split(' ')[0], userEmail: targetUser.email } : {};
 };
 
 const findSlackUserId = (slackUsers, email) => {
-  const user = slackUsers.find((slackUser) => slackUser.email === email);
-  return user ? user.id : null;
+  const slackTargetUser = slackUsers.find((slackUser) => slackUser.email === email);
+  return slackTargetUser ? slackTargetUser.id : null;
 };
 
 module.exports = { doClockOut };
