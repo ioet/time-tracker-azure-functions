@@ -2,8 +2,8 @@ const axios = require('axios');
 const config = require('./config');
 
 const getToken = async () => {
-  const { clientId, userNameMS, userPasswordMS, B2CLogin } = config;
-  const endpoint = B2CLogin;
+  const { clientId, userNameMS, userPasswordMS, b2cLogin } = config;
+  const endpoint = b2cLogin;
 
   const params = new URLSearchParams();
 
