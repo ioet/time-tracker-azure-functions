@@ -28,7 +28,7 @@ const doClockOut = async (context) => {
   await Promise.all(
     entries.map(async (timeEntryAsJson) => {
       const timeEntry = new TimeEntry(timeEntryAsJson);
-      const { userName, userEmail } = findUserData( users, timeEntry.timeEntry.owner_id);
+      const { userName, userEmail } = findUserData(users, timeEntry.timeEntry.owner_id);
       const userId = findSlackUserId(slackUsers, userEmail);
 
       if (timeEntry.needsToBeClockedOut()) {
@@ -38,10 +38,11 @@ const doClockOut = async (context) => {
         timeEntryAsJson.end_date = timeEntry.getTimeToClockOut();
         await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson);
         totalClockOutsExecuted++;
-        
-      } else if (timeEntry.needsToBeClockedOutMidnight()) {
+      }
+      
+      else if (timeEntry.needsToBeClockedOutMidnight()) {
         if (userId) {
-          SlackClient.sendMessageToUser(userId,CLOCK_OUT_MESSAGE_MIDNIGHT.replace('%user_name%', userName));
+          SlackClient.sendMessageToUser(userId, CLOCK_OUT_MESSAGE_MIDNIGHT.replace('%user_name%', userName));
         }
         timeEntryAsJson.end_date = timeEntry.getTimeToClockOutMidnight();
         await container.item(timeEntryAsJson.id, timeEntryAsJson.tenant_id).replace(timeEntryAsJson);
