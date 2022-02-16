@@ -1,25 +1,23 @@
-const _ = require("lodash");
-const CosmosClient = require("@azure/cosmos").CosmosClient;
-const config = require("./config");
-const TimeEntry = require("./time_entry");
-const MsalClient = require("./msal_client");
-const TimeEntryDao = require("./time_entry_dao");
-const SlackClient = require("./slack_client");
-const { CLOCK_OUT_MESSAGE, CLOCK_OUT_MESSAGE_MIDNIGHT } = require("./constants");
+const _ = require('lodash');
+const CosmosClient = require('@azure/cosmos').CosmosClient;
+const config = require('./config');
+const TimeEntry = require('./time_entry');
+const MsalClient = require('./msal_client');
+const TimeEntryDao = require('./time_entry_dao');
+const SlackClient = require('./slack_client');
+const { CLOCK_OUT_MESSAGE, CLOCK_OUT_MESSAGE_MIDNIGHT } = require('./constants');
 
 const doClockOut = async (context) => {
-  context.log(
-    `I am going to check how many entries were not clocked out ${new Date()}`
-  );
+  context.log(`I am going to check how many entries were not clocked out ${new Date()}`);
 
   const { endpoint, key, databaseId } = config;
   const client = new CosmosClient({ endpoint, key });
   const database = client.database(databaseId);
-  const container = database.container("time_entry");
+  const container = database.container('time_entry');
   const timeEntryDao = new TimeEntryDao(database);
 
   const response = await MsalClient.findUsersInMS();
-  const users = response.data.value;
+  const users = response.data;
   const slackUsers = await SlackClient.findUsersInSlack();
 
   const { resources: entries } = await timeEntryDao.getEntriesWithNoEndDate();
@@ -53,19 +51,17 @@ const doClockOut = async (context) => {
     })
   );
 
-  context.log(
-    `I just clocked out ${totalClockOutsExecuted} entries, thanks are not needed...`
-  );
+  context.log(`I just clocked out ${totalClockOutsExecuted} entries, thanks are not needed...`);
 };
 
 const findUserData = (users, id) => {
-  const user = users.find((user) => user.objectId === id);
-  return user ? { userName: user.displayName.split(" ")[0], userEmail: _.first(user.otherMails) } : {};
+  const targetUser = users.find((user) => user.id === id);
+  return targetUser ? { userName: targetUser.name.split(' ')[0], userEmail: targetUser.email } : {};
 };
 
 const findSlackUserId = (slackUsers, email) => {
-  const user = slackUsers.find((slackUser) => slackUser.email === email);
-  return user ? user.id : null;
+  const slackTargetUser = slackUsers.find((slackUser) => slackUser.email === email);
+  return slackTargetUser ? slackTargetUser.id : null;
 };
 
 module.exports = { doClockOut };

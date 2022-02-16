@@ -1,27 +1,45 @@
-const axios = require("axios")
-const msal = require('@azure/msal-node');
-const config = require("./config");
+const axios = require('axios');
+const config = require('./config');
 
-const findUsersInMS = async() => {
-    const {clientId, authority, clientSecret} = config;
-    const endpoint = 'https://graph.windows.net/ioetec.onmicrosoft.com'
-    const configuration = {
-        auth: {
-            clientId: clientId,
-            authority: authority,
-            clientSecret: clientSecret
-        }
-    };
+const getToken = async () => {
+  const { clientId, userNameMS, userPasswordMS, b2cLogin } = config;
+  const endpoint = b2cLogin;
 
-    const cca = new msal.ConfidentialClientApplication(configuration);
-    const clientCredentialRequest = {
-        scopes: ['https://graph.windows.net/.default'],
-    };
-    const response = await cca.acquireTokenByClientCredential(clientCredentialRequest)
-    const token = response.accessToken
-    return axios.get(`${endpoint}/users?api-version=1.6&$select=displayName,otherMails,objectId`,
-      { 'headers': { 'Authorization': token } })
-}
+  const params = new URLSearchParams();
+
+  params.append('username', userNameMS);
+  params.append('password', userPasswordMS);
+  params.append('grant_type', 'password');
+  params.append('scope', clientId);
+  params.append('client_id', clientId);
+  params.append('response_type', 'token');
+
+  const headers = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  };
+
+  return axios.post(endpoint, params, headers)
+    .then((result) => {
+      return result.data.access_token;
+    })
+    .catch((err) => {
+      console.log(`Invalid request to: ${endpoint}`);
+    });
+};
+
+const findUsersInMS = async () => {
+  const endpoint = 'https://timetracker-api.azurewebsites.net/';
+  const token = await getToken();
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.get(`${endpoint}/users`, headers);
+};
 
 module.exports = { findUsersInMS };
-
