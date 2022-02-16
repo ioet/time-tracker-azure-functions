@@ -1,4 +1,4 @@
-const moment = require('moment')
+const moment = require("moment")
 
 class TimeEntry {
 
@@ -15,7 +15,7 @@ class TimeEntry {
   }
 
   getMidnightInTimeEntryZone(){
-    return moment(this.timeEntry.start_date).utc().subtract(this.timeEntry.timezone_offset, 'minutes').endOf('day')
+    return moment(this.timeEntry.start_date).utcOffset(this.timeEntry.timezone_offset * -1).endOf('day');
   }
 
   getTimeToClockOutMidnight(){
